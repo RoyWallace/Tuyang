@@ -5,7 +5,6 @@ package etong.tuyang.picture.data.remote;
  */
 
 public class GalleryClass extends BaseBean{
-    public int id;
     public String name;
     public String title;
     public String keywords;

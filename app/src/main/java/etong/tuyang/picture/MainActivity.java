@@ -1,9 +1,12 @@
 package etong.tuyang.picture;
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,6 +43,12 @@ public class MainActivity extends AppCompatActivity {
 
 
         listAdapter = new ListAdapter();
+        recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
+            @Override
+            public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+                outRect.bottom = TypedValue.COMPLEX_UNIT_DIP * 1;
+            }
+        });
         recyclerView.setAdapter(listAdapter);
 
         HttpHelper.getInstance().getGalleryClass(new Callback<GalleryClassResult>() {
