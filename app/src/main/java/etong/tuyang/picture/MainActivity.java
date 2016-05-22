@@ -1,11 +1,10 @@
 package etong.tuyang.picture;
 
-import android.graphics.Canvas;
+import android.content.Intent;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +23,8 @@ import etong.tuyang.picture.data.remote.GalleryClassResult;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+
+import static etong.tuyang.picture.PictureListActivity.CLASS_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
             @Override
             public void onFailure(Call<GalleryClassResult> call, Throwable t) {
-                Log.e("HttpHelper", t.getMessage());
+                t.printStackTrace();
             }
         });
     }
@@ -100,6 +101,15 @@ public class MainActivity extends AppCompatActivity {
 
         public void bindData(final GalleryClass c) {
             textView.setText(c.description);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent();
+                    intent.putExtra(CLASS_ID, c.id);
+                    intent.setClass(MainActivity.this, PictureListActivity.class);
+                    startActivity(intent);
+                }
+            });
         }
     }
 }

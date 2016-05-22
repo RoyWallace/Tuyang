@@ -16,6 +16,7 @@ import javax.security.cert.X509Certificate;
 
 import etong.tuyang.picture.data.remote.GalleryClass;
 import etong.tuyang.picture.data.remote.GalleryClassResult;
+import etong.tuyang.picture.data.remote.GalleryResult;
 import okhttp3.OkHttpClient;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
@@ -69,6 +70,11 @@ public class HttpHelper {
 
     public void getGalleryClass(Callback<GalleryClassResult> callback) {
         Call<GalleryClassResult> userCall = apiService.getGalleryClassList();
+        userCall.enqueue(callback);
+    }
+
+    public void getGalleryList(int page, int count, int id, Callback<GalleryResult> callback) {
+        Call<GalleryResult> userCall = apiService.getGalleryList(page, count, id);
         userCall.enqueue(callback);
     }
 
