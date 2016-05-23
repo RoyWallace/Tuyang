@@ -6,11 +6,11 @@ package etong.tuyang.picture.data.remote;
 
 public class Gallery extends BaseBean {
 
-    private int galleryclass;//          图片分类
-    private String title;//          标题
-    private String img;//          图库封面
-    private int count;//          访问数
-    private int rcount;//           回复数
-    private int fcount;//          收藏数
-    private int size;//      图片多少张
+    public int galleryclass;//          图片分类
+    public String title;//          标题
+    public String img;//          图库封面
+    public int count;//          访问数
+    public int rcount;//           回复数
+    public int fcount;//          收藏数
+    public int size;//      图片多少张
 }
