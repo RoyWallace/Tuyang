@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static etong.tuyang.picture.PictureListActivity.CLASS_ID;
+import static etong.tuyang.picture.GalleryListActivity.CLASS_ID;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View v) {
                     Intent intent = new Intent();
                     intent.putExtra(CLASS_ID, c.id);
-                    intent.setClass(MainActivity.this, PictureListActivity.class);
+                    intent.setClass(MainActivity.this, GalleryListActivity.class);
                     startActivity(intent);
                 }
             });

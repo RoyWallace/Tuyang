@@ -19,7 +19,7 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".picture.PictureListActivity" />
+        <activity android:name=".picture.GalleryListActivity" />
     </application>
 
 </manifest>

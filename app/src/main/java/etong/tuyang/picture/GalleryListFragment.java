@@ -2,7 +2,7 @@ package etong.tuyang.picture;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,28 +14,19 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import etong.tuyang.R;
-import etong.tuyang.picture.data.HttpHelper;
 import etong.tuyang.picture.data.remote.Gallery;
-import etong.tuyang.picture.data.remote.GalleryResult;
-import etong.tuyang.util.UIUtil;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
-
 
 /**
- * Created by hwt on 2016/5/21.
+ * Created by hwt on 2016/5/23.
  */
-
-public class PictureListActivity extends AppCompatActivity {
+public class GalleryListFragment extends Fragment implements GalleryListContract.View {
 
     public final static String IMAGE_API = "http://tnfs.tngou.net/img";
 
-    public final static String CLASS_ID = "classId";
-
     private int classId;
+
+    private GalleryListContract.Presenter presenter;
 
     @BindView(R.id.recyclerView)
     RecyclerView recyclerView;
@@ -44,33 +35,39 @@ public class PictureListActivity extends AppCompatActivity {
 
     private ImageAdapter imageAdapter;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+    public static GalleryListFragment getInstance(int classId) {
+        GalleryListFragment fragment = new GalleryListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putInt(GalleryListActivity.CLASS_ID, classId);
+        fragment.setArguments(bundle);
+        return fragment;
+    }
 
-        classId = getIntent().getIntExtra(CLASS_ID, 0);
+    @Override
+    public void setPresenter(GalleryListContract.Presenter presenter) {
+        this.presenter = presenter;
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        return super.onCreateView(inflater, container, savedInstanceState);
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+
+        classId = getArguments().getInt(GalleryListActivity.CLASS_ID);
 
         imageAdapter = new ImageAdapter();
         recyclerView.setAdapter(imageAdapter);
 
-        HttpHelper.getInstance().getGalleryList(classId, 20, classId, new Callback<GalleryResult>() {
-            @Override
-            public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
-                GalleryResult result = response.body();
-                if (result != null && result.status && result.tngou != null) {
-                    imageList.addAll(result.tngou);
-                    imageAdapter.notifyDataSetChanged();
-                }
-            }
+    }
 
-            @Override
-            public void onFailure(Call<GalleryResult> call, Throwable t) {
-
-            }
-        });
-
+    @Override
+    public void refreshList() {
+//        imageList.addAll();
+        imageAdapter.notifyDataSetChanged();
     }
 
     class ImageAdapter extends RecyclerView.Adapter<ImageViewHolder> {
