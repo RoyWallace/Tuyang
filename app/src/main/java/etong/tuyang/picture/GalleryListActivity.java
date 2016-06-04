@@ -31,7 +31,7 @@ public class GalleryListActivity extends AppCompatActivity {
         GalleryListFragment fragment = GalleryListFragment.getInstance(classId);
         getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
-        presenter = new GalleryListPresenter(fragment);
+        presenter = new GalleryListPresenter(fragment);  
     }
 
 }
