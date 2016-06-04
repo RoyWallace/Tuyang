@@ -1,5 +1,6 @@
 package etong.tuyang;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,6 +14,10 @@ import android.view.ViewGroup;
 public class ToolbarActivity extends AppCompatActivity {
 
     public Toolbar toolbar;
+
+    public Activity getActivity() {
+        return this;
+    }
 
     @Override
     public void setContentView(View view, ViewGroup.LayoutParams params) {

@@ -3,6 +3,7 @@ package etong.tuyang.picture.data;
 import etong.tuyang.picture.data.remote.Gallery;
 import etong.tuyang.picture.data.remote.GalleryClassResult;
 import etong.tuyang.picture.data.remote.GalleryResult;
+import etong.tuyang.picture.data.remote.PictureResult;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -18,5 +19,8 @@ public interface ApiService {
 
     @GET("list")
     Call<GalleryResult> getGalleryList(@Query("page") int page, @Query("rows") int rows, @Query("id") int id);
+
+    @GET("show")
+    Call<PictureResult> getPictureList(@Query("id") long id);
 
 }

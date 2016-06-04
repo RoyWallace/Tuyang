@@ -1,10 +1,12 @@
 package etong.tuyang.picture;
 
 import android.content.Intent;
+import android.database.sqlite.SQLiteCursor;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
 
-
         listAdapter = new ListAdapter();
         recyclerView.addItemDecoration(new RecyclerView.ItemDecoration() {
             @Override
@@ -66,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onFailure(Call<GalleryClassResult> call, Throwable t) {
                 t.printStackTrace();
+                Log.i("etong","发生错误");
             }
         });
     }

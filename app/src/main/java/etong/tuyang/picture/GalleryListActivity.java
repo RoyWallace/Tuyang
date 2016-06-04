@@ -26,11 +26,10 @@ public class GalleryListActivity extends AppCompatActivity {
 
         classId = getIntent().getIntExtra(CLASS_ID, -1);
         if (classId == -1) {
-
             return;
         }
         GalleryListFragment fragment = GalleryListFragment.getInstance(classId);
-        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment);
+        getSupportFragmentManager().beginTransaction().replace(R.id.container, fragment).commit();
 
         presenter = new GalleryListPresenter(fragment);
     }

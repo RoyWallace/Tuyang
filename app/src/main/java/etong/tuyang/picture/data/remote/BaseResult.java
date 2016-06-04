@@ -9,4 +9,5 @@ import java.io.Serializable;
 public class BaseResult implements Serializable {
 
     public boolean status;
+
 }

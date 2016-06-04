@@ -4,19 +4,18 @@ import java.util.List;
 
 import etong.tuyang.BasePresenter;
 import etong.tuyang.BaseView;
-import etong.tuyang.picture.data.remote.Gallery;
+import etong.tuyang.picture.data.remote.Picture;
 
 /**
- * Created by hwt on 2016/5/23.
+ * Created by hwt on 2016/6/2.
  */
-public interface GalleryListContract {
+public interface PictureListContract {
 
     interface View extends BaseView<Presenter> {
-        void refreshList(List<Gallery> list);
+        void refreshList(List<Picture> list);
     }
 
     interface Presenter extends BasePresenter {
-        void getGalleryList(int classId);
+        void getPictureList(long pictureId);
     }
-
 }

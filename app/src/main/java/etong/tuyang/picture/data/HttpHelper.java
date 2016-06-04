@@ -1,31 +1,24 @@
 package etong.tuyang.picture.data;
 
-import android.util.Log;
+import android.content.Context;
+import android.text.TextUtils;
 
-import com.google.gson.Gson;
+import java.io.File;
+import java.io.IOException;
 
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.security.cert.CertificateException;
-import javax.security.cert.X509Certificate;
-
-import etong.tuyang.picture.data.remote.GalleryClass;
 import etong.tuyang.picture.data.remote.GalleryClassResult;
 import etong.tuyang.picture.data.remote.GalleryResult;
+import etong.tuyang.picture.data.remote.PictureResult;
+import okhttp3.Cache;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Call;
 import retrofit2.Callback;
-import retrofit2.Response;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
-
-import static etong.tuyang.MyApplication.IS_DEV;
 
 /**
  * Created by hwt on 2016/5/21.
@@ -40,6 +33,9 @@ public class HttpHelper {
     private ApiService apiService;
 
     private HttpHelper() {
+    }
+
+    public void init(Context context) {
         //Log拦截器
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         // set your desired log level
@@ -51,6 +47,29 @@ public class HttpHelper {
         // add logging as last interceptor
         httpClient.addInterceptor(logging);  // <-- this is the important line!
 
+        //
+        File cacheFile = new File(context.getCacheDir(), "responses");
+        final Cache cache = new Cache(cacheFile, 1024 * 1024 * 100); //100Mb
+        httpClient.cache(cache);
+
+        Interceptor interceptor = new Interceptor() {
+            @Override
+            public Response intercept(Chain chain) throws IOException {
+                Request request = chain.request();
+                Response response = chain.proceed(request);
+
+                String cacheControl = request.cacheControl().toString();
+                if (TextUtils.isEmpty(cacheControl)) {
+                    cacheControl = "public, max-age=60";
+                }
+                return response.newBuilder()
+                        .header("Cache-Control", cacheControl)
+                        .removeHeader("Pragma")
+                        .build();
+            }
+        };
+
+        httpClient.addNetworkInterceptor(interceptor);
 
         retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
@@ -75,6 +94,11 @@ public class HttpHelper {
 
     public void getGalleryList(int page, int count, int id, Callback<GalleryResult> callback) {
         Call<GalleryResult> userCall = apiService.getGalleryList(page, count, id);
+        userCall.enqueue(callback);
+    }
+
+    public void getPictureList(long pictureId, Callback<PictureResult> callback) {
+        Call<PictureResult> userCall = apiService.getPictureList(pictureId);
         userCall.enqueue(callback);
     }
 

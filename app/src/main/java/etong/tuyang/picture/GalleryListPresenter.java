@@ -11,11 +11,11 @@ import retrofit2.Response;
  */
 public class GalleryListPresenter implements GalleryListContract.Presenter {
 
-    private GalleryListContract.View galleryListView;
+    private GalleryListContract.View view;
 
-    public GalleryListPresenter(GalleryListContract.View galleryListView) {
-        this.galleryListView = galleryListView;
-        galleryListView.setPresenter(this);
+    public GalleryListPresenter(GalleryListContract.View view) {
+        this.view = view;
+        view.setPresenter(this);
     }
 
     @Override
@@ -26,18 +26,18 @@ public class GalleryListPresenter implements GalleryListContract.Presenter {
     @Override
     public void getGalleryList(int classId) {
 
-        HttpHelper.getInstance().getGalleryList(0, 20, classId, new Callback<GalleryResult>() {
+        HttpHelper.getInstance().getGalleryList(1, 20, classId, new Callback<GalleryResult>() {
             @Override
             public void onResponse(Call<GalleryResult> call, Response<GalleryResult> response) {
                 GalleryResult result = response.body();
                 if (result != null && result.status && result.tngou != null) {
-
+                    view.refreshList(result.tngou);
                 }
             }
 
             @Override
             public void onFailure(Call<GalleryResult> call, Throwable t) {
-
+                t.printStackTrace();
             }
         });
     }
